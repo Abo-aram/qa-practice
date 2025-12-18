@@ -1,0 +1,156 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f4f7fb, #e9eef5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Card */
+.profile-container {
+    background: #ffffff;
+    width: 100%;
+    max-width: 480px;
+    padding: 32px;
+    border-radius: 14px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.profile-container h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+.profile-container p {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* Status message */
+#statusMsg {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+#statusMsg.hidden {
+    display: none;
+}
+
+/* Inputs */
+.input-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+textarea {
+    resize: none;
+}
+
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Radio group */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 6px;
+}
+
+.radio-group input {
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.radio-group label {
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Checkbox */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group input {
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* Button */
+#saveBtn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s, transform 0.1s;
+}
+
+#saveBtn:hover {
+    background: #1e40af;
+}
+
+#saveBtn:active {
+    transform: scale(0.98);
+}
+
+/* Back link */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #6b7280;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #2563eb;
+}
