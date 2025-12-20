@@ -1,0 +1,153 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+}
+
+body {
+    background: var(--bg);
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text);
+    margin: 0;
+}
+
+.app-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 20px;
+    
+}
+
+.profile-card {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    background: var(--card);
+    max-width: 1000px;
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    background: #1e293b;
+    color: white;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-wrapper {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin-bottom: 20px;
+}
+
+#avatar-preview {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255,255,255,0.1);
+}
+
+.upload-overlay {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; transition: 0.3s; cursor: pointer;
+}
+
+.upload-overlay:hover { opacity: 1; }
+.upload-overlay span { font-size: 12px; font-weight: bold; }
+
+.sidebar-nav { margin-top: auto; width: 100%; }
+.sidebar-nav a {
+    display: block; color: #cbd5e1; text-decoration: none;
+    padding: 12px; border-radius: 8px; transition: 0.2s;
+}
+.sidebar-nav a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+/* Content Area */
+.content-area { padding: 40px; }
+.section-header h2 { margin: 0; font-size: 22px; }
+.section-header p { color: var(--muted); font-size: 14px; margin-bottom: 25px; }
+
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.field { margin-bottom: 20px; }
+.field label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 8px; color: var(--muted); text-transform: uppercase; }
+
+input, select, textarea {
+    width: 100%; padding: 12px; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 15px; box-sizing: border-box;
+}
+
+input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
+/* Gender Pills */
+.pill-group { display: flex; gap: 10px; }
+.pill-group label {
+    padding: 8px 16px; background: #f8fafc; border: 1px solid var(--border);
+    border-radius: 20px; cursor: pointer; transition: 0.2s; font-size: 14px;
+}
+.pill-group input:checked + label { background: var(--primary); color: white; border-color: var(--primary); }
+
+.save-btn {
+    background: var(--primary); color: white; border: none;
+    padding: 14px 28px; border-radius: 8px; font-weight: 600;
+    cursor: pointer; width: 100%; transition: 0.2s;
+}
+.save-btn:hover { background: var(--primary-dark); }
+
+/* Feedback */
+#status-msg.success { color: #059669; margin-top: 10px; }
+#status-msg.error { color: #dc2626; margin-top: 10px; }
+
+/* ===== Toast Notifications ===== */
+#toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 9999;
+}
+
+.toast {
+    min-width: 280px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    animation: slideIn 0.4s ease forwards;
+    opacity: 0;
+}
+
+.toast.success {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.toast.error {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

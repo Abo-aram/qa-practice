@@ -3,7 +3,7 @@ session_start();
 
 // Security Check: If no user is logged in, kick them back to login
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 

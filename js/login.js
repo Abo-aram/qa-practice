@@ -33,7 +33,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
         loginBtn.innerText = "Redirecting...";
         window.location.href = "homepage.php";
       } else if (response.status === 401) {
-        showLoginError(errorBox, "❌ " + data.message, "yellow");
+        showLoginError(errorBox, "❌ " + data.message, "red");
         highlightError(emailInput, passInput);
       } else {
         showLoginError(

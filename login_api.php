@@ -17,6 +17,17 @@ if (empty($email) || empty($pass)) {
 
 try {
     // FIX: Added 'full_name' to the SELECT statement
+    $stmt = $pdo->prepare("SELECT email FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $existingUser = $stmt->fetch();
+    if (!$existingUser) {
+        http_response_code(401); 
+        echo json_encode(["status" => "error", "message" => "user not found"]);
+        exit;
+    }
+
+
+
     $stmt = $pdo->prepare("SELECT id, full_name, password FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch();

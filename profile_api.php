@@ -1,38 +1,59 @@
 <?php
 session_start();
-header("content-type:application/json");
-require_once 'db_config.php';
+header("Content-Type: application/json");
+require_once "db_config.php";
 
-if(!isset($_SESSION['user_id'])){
-    http_response_code(401);
-    echo json_encode("message","unauthorized");
-    exit();
+if (!isset($_SESSION["user_id"])) {
+    echo json_encode(["status" => "error", "message" => "Unauthorized"]);
+    exit;
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
+$userId = $_SESSION["user_id"];
 
-try{
-    $sql = "UPDATE users SET bio = ?, country= ?, gender=?, newsletter=? WHERE id = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        $data['bio'] ?? 'not set',
-        $data['country'] ?? 'not set',
-        $data['gender'] ?? 'not set',
-        $data['newsletter'] ? 1 : 0,
-        $_SESSION['user_id']
-
-    ]);
-
-    http_response_code(200);
-    echo json_encode(["message"=>"profile updated successfully"]);
-
-
-}catch (PDOException $e){
-    http_response_code(500);
-    echo json_encode(["message"=>"failed to update profile"]);
+// ================= GET PROFILE =================
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    $stmt = $pdo->prepare("
+        SELECT full_name, email, bio, country, gender, newsletter, profile_pic
+        FROM users WHERE id = ?
+    ");
+    $stmt->execute([$userId]);
+    echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
+    exit;
 }
 
+// ================= UPDATE PROFILE =================
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
+    $name       = trim($_POST["full_name"] ?? "");
+    $bio        = trim($_POST["bio"] ?? "");
+    $country    = $_POST["country"] ?? "";
+    $gender     = $_POST["gender"] ?? null;
+    $newsletter = isset($_POST["newsletter"]) ? 1 : 0;
+    $newPass    = $_POST["new_password"] ?? "";
 
+    if (strlen($name) <= 1) {
+        echo json_encode(["status" => "error", "message" => "Name too short"]);
+        exit;
+    }
 
-?>
+    // Password change (optional)
+    if ($newPass !== "") {
+        if (strlen($newPass) < 8) {
+            echo json_encode(["status" => "error", "message" => "Password must be at least 8 characters"]);
+            exit;
+        }
+        $hashed = password_hash($newPass, PASSWORD_DEFAULT);
+        $pdo->prepare("UPDATE users SET password=? WHERE id=?")
+            ->execute([$hashed, $userId]);
+    }
+
+    // Update profile
+    $stmt = $pdo->prepare("
+        UPDATE users SET
+        full_name=?, bio=?, country=?, gender=?, newsletter=?
+        WHERE id=?
+    ");
+    $stmt->execute([$name, $bio, $country, $gender, $newsletter, $userId]);
+
+    echo json_encode(["status" => "success", "message" => "Profile updated successfully"]);
+}

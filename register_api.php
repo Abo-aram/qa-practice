@@ -7,10 +7,41 @@ $name = $data['fullName'] ?? '';
 $email = $data['email'] ?? '';
 $pass = $data['password'] ?? '';
 
-if (empty($name) || empty($email) || empty($pass)) {
+if (!empty($name) || !empty($email) || !empty($pass)) {
+       if(strlen($name) <=1){
+        http_response_code(400); // Bad Request
+        echo json_encode(["message" => "Name must be more than 1 character!"]);
+        exit;
+    }
+   
+    //validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) ) {    
+        http_response_code(400); // Bad Request
+        echo json_encode(["message" => "Invalid email format!"]);
+        exit;
+    }
+    if(strlen($pass) < 8){
+        http_response_code(400); // Bad Request
+        echo json_encode(["message" => "Password must be at least 8 characters long!"]);
+        exit;
+    }
+    
+    if(!preg_match('/[a-zA-z0-9]+$/', $pass)){
+        http_response_code(400); // Bad Request
+        echo json_encode(["message" => "Password not valid!"]);
+        exit;
+    }
+
+ 
+
+    
+}else{
     http_response_code(400); // Bad Request
     echo json_encode(["message" => "All fields are required!"]);
+
+
     exit;
+
 }
 
 try {
