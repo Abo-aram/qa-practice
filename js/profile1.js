@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch("profile_api.php");
       const user = await res.json();
 
+      // Note: The rewritten API returns a direct object on GET, or error status
       if (user.status === "error") {
         window.location.href = "login.php";
         return;
@@ -21,10 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("country").value = user.country ?? "Iraq";
       document.getElementById("newsletter").checked = user.newsletter == 1;
 
-      document.getElementById("side-name").innerText =
-        user.full_name ?? "User";
-      document.getElementById("side-email").innerText =
-        user.email ?? "";
+      document.getElementById("side-name").innerText = user.full_name ?? "User";
+      document.getElementById("side-email").innerText = user.email ?? "";
 
       if (user.gender) {
         const radio = document.querySelector(
@@ -36,8 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       avatarPreview.src = user.profile_pic
         ? "uploads/" + user.profile_pic
         : "uploads/default_avatar.png";
-
-    } catch {
+    } catch (err) {
       showToast("Failed to load profile", "error");
     }
   }
@@ -52,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ================= SUBMIT FORM =================
+  // ================= SUBMIT FORM (REWRITTEN FOR JSON) =================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -67,20 +65,29 @@ document.addEventListener("DOMContentLoaded", () => {
     saveBtn.disabled = true;
     saveBtn.innerText = "Saving...";
 
+    // 1. Convert FormData to a plain JavaScript Object
     const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // 2. Handle the Checkbox (FormData only includes it if checked)
+    data.newsletter = document.getElementById("newsletter").checked ? 1 : 0;
 
     try {
+      // 3. Send the request as JSON
       const res = await fetch("profile_api.php", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json", // Crucial for the PHP script
+        },
+        body: JSON.stringify(data), // Convert object to JSON string
       });
 
       const result = await res.json();
       showToast(result.message, result.status);
 
       if (result.status === "success") loadProfile();
-    } catch {
-      showToast("Server error", "error");
+    } catch (err) {
+      showToast("Server error: Could not reach API", "error");
     } finally {
       saveBtn.disabled = false;
       saveBtn.innerText = "Save Changes";

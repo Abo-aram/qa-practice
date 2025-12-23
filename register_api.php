@@ -7,9 +7,11 @@ $name = $data['fullName'] ?? '';
 $email = $data['email'] ?? '';
 $pass = $data['password'] ?? '';
 
+
 if (!empty($name) || !empty($email) || !empty($pass)) {
+    echo json_encode(["message" => $data]);
        if(strlen($name) <=1){
-        http_response_code(400); // Bad Request
+        http_response_code(400); // Bad Request\
         echo json_encode(["message" => "Name must be more than 1 character!"]);
         exit;
     }
